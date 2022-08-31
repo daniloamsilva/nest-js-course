@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Res,
 } from '@nestjs/common';
@@ -27,5 +29,18 @@ export class CoursesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   store(@Body() body) {
     return body;
+  }
+
+  @Patch(':id')
+  update(@Res() response, @Param('id') id: string, @Body() body) {
+    return response.json({
+      id,
+      body,
+    });
+  }
+
+  @Delete(':id')
+  destroy(@Res() response, @Param('id') id: string) {
+    return response.json({ message: 'Curso apagado com sucesso.' });
   }
 }
