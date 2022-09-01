@@ -13,21 +13,22 @@ export class CoursesService {
   ];
 
   index() {
-    this.courses;
+    return this.courses;
   }
 
   show(id: string) {
-    this.courses.find((course) => course.id === id);
+    return this.courses.find((course) => course.id === id);
   }
 
   store(storeCourseDTO: any) {
-    this.courses.push(storeCourseDTO);
+    return this.courses.push(storeCourseDTO);
   }
 
   update(id: string, updateCourseDTO: any) {
     const indexCourse = this.courses.findIndex((course) => course.id === id);
-
     this.courses[indexCourse] = updateCourseDTO;
+
+    return this.courses[indexCourse];
   }
 
   destroy(id: string) {
@@ -36,5 +37,7 @@ export class CoursesService {
     if (indexCourse >= 0) {
       this.courses.splice(indexCourse, 1);
     }
+
+    return;
   }
 }

@@ -17,33 +17,28 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Get('')
-  index(@Res() response) {
-    return response.status(HttpStatus.OK).json({
-      message: 'Lista de cursos.',
-    });
+  index() {
+    return this.coursesService.index();
   }
 
   @Get(':id')
   show(@Param('id') id: string) {
-    return `Course #${id}`;
+    return this.coursesService.show(id);
   }
 
   @Post('')
   @HttpCode(HttpStatus.NO_CONTENT)
   store(@Body() body) {
-    return body;
+    return this.coursesService.store(body);
   }
 
   @Patch(':id')
-  update(@Res() response, @Param('id') id: string, @Body() body) {
-    return response.json({
-      id,
-      body,
-    });
+  update(@Param('id') id: string, @Body() body) {
+    return this.coursesService.update(id, body);
   }
 
   @Delete(':id')
-  destroy(@Res() response, @Param('id') id: string) {
-    return response.json({ message: 'Curso apagado com sucesso.' });
+  destroy(@Param('id') id: string) {
+    return this.coursesService.destroy(id);
   }
 }
