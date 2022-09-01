@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Course } from './entities/course.entity';
+import { CreateCourseDTO } from './dtos/create-course-dto.interface';
+import { updateCourseDTO } from './dtos/update-course-dto.interface';
+import { Course } from './entities/course.interface';
 
 @Injectable()
 export class CoursesService {
@@ -26,18 +28,18 @@ export class CoursesService {
     return course;
   }
 
-  store(storeCourseDTO: any) {
-    return this.courses.push(storeCourseDTO);
+  store(createCourseDTO: CreateCourseDTO) {
+    return this.courses.push({ id: this.makeId(20), ...createCourseDTO });
   }
 
-  update(id: string, updateCourseDTO: any) {
+  update(id: string, updateCourseDTO: updateCourseDTO) {
     const indexCourse = this.courses.findIndex((course) => course.id === id);
 
     if (indexCourse === -1) {
       throw new NotFoundException('Course not found.');
     }
 
-    this.courses[indexCourse] = updateCourseDTO;
+    this.courses[indexCourse] = { id, ...updateCourseDTO } as Course;
 
     return this.courses[indexCourse];
   }
@@ -52,5 +54,16 @@ export class CoursesService {
     }
 
     return;
+  }
+
+  makeId(length: number) {
+    let result = '';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 }
