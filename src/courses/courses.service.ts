@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseDto } from './dtos/create-course.dto';
 import { UpdateCourseDto } from './dtos/update-course.dto';
-import { Course } from './entities/course.interface';
+import { Course } from './entities/course.entity';
 
 @Injectable()
 export class CoursesService {
