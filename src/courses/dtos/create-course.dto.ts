@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateCourseDto {
   @IsString()
@@ -9,4 +9,7 @@ export class CreateCourseDto {
 
   @IsNumber()
   readonly duration: number;
+
+  @IsString({ each: true })
+  readonly tags: string[];
 }
