@@ -1,23 +1,16 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
-import { Tag } from './tag.entity';
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
+import { Course } from './course.entity';
 
-@Entity('courses')
-export class Course {
+@Entity('tags')
+export class Tag {
   @PrimaryColumn()
   id: string;
 
   @Column()
   name: string;
 
-  @Column()
-  description: string;
-
-  @Column()
-  duration: number;
-
-  @JoinTable()
-  @ManyToMany(() => Tag, (tag) => tag.courses)
-  tags: Tag[];
+  @ManyToMany(() => Course, (course) => course.tags)
+  courses: Course[];
 
   constructor() {
     if (!this.id) this.id = this.makeId(20);
