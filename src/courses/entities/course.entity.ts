@@ -25,7 +25,17 @@ export class Course {
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @JoinTable({ name: 'courses_tags' })
+  @JoinTable({
+    name: 'courses_tags',
+    joinColumn: {
+      name: 'course_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'tag_id',
+      referencedColumnName: 'id',
+    },
+  })
   @ManyToMany(() => Tag, (tag) => tag.courses, { cascade: true })
   tags: Tag[];
 
