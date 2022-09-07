@@ -1,25 +1,17 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateCoursesTable1662430361433 implements MigrationInterface {
+export class CreateCoursesTagsTable1662519008607 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
-
     await queryRunner.createTable(
       new Table({
-        name: 'courses',
+        name: 'courses_tags',
         columns: [
           {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-          },
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'description',
-            type: 'varchar',
+            generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'created_at',
@@ -32,6 +24,6 @@ export class CreateCoursesTable1662430361433 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('courses');
+    await queryRunner.dropTable('courses_tags');
   }
 }

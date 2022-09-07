@@ -1,5 +1,14 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { Course } from './course.entity';
+
+import { v4 as uuid } from 'uuid';
 
 @Entity('tags')
 export class Tag {
@@ -12,18 +21,12 @@ export class Tag {
   @ManyToMany(() => Course, (course) => course.tags)
   courses: Course[];
 
-  constructor() {
-    if (!this.id) this.id = this.makeId(20);
-  }
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date;
 
-  makeId(length: number) {
-    let result = '';
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  @BeforeInsert()
+  generateId() {
+    if (this.id) return;
+    this.id = uuid();
   }
 }
