@@ -1,13 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe, HttpStatus } from '@nestjs/common';
 import * as request from 'supertest';
 import { CoursesModule } from '../../src/courses/courses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CreateCourseDto } from '../../src/courses/dtos/create-course.dto';
 
-describe('AppController (e2e)', () => {
+describe('Courses: /courses', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  const course = {
+    name: 'NestJS com TypeORM',
+    description: 'Criando apis restful com nestjs',
+    tags: ['nestjs', 'typeorm', 'nodejs', 'typescript']
+  };
+
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [CoursesModule, TypeOrmModule.forRoot({
         type: 'postgres',
@@ -23,8 +30,25 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    );
+
     await app.init();
   });
 
-  it.todo('POST /courses');
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('POST /courses', () => {
+    return request(app.getHttpServer())
+      .post('/courses')
+      .send(course as CreateCourseDto)
+      .expect(HttpStatus.NO_CONTENT);
+  });
 });
