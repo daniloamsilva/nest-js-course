@@ -59,4 +59,37 @@ describe('CoursesService', () => {
     expect(mockCourseRepository.save).toHaveBeenCalled();
     expect(expectOutputCourse).toStrictEqual(newCourse);
   });
+
+  it('should be able to list all courses', async () => {
+    const expectOutputTags = [
+      {
+        id,
+        name: 'nestjs',
+        created_at: date,
+      },
+    ];
+
+    const expectOutputCourse = [
+      {
+        id,
+        name: 'Test',
+        description: 'Test description',
+        created_at: date,
+        tags: expectOutputTags,
+      },
+    ];
+
+    const mockCourseRepository = {
+      index: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourse)),
+      find: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourse)),
+    };
+
+    // @ts-expect-error defined part of methods
+    service['coursesRepository'] = mockCourseRepository;
+
+    const courses = await service.index();
+
+    expect(mockCourseRepository.find).toHaveBeenCalled();
+    expect(expectOutputCourse).toStrictEqual(courses);
+  });
 });
