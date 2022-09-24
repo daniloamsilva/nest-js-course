@@ -171,4 +171,37 @@ describe('CoursesService', () => {
     expect(mockCourseRepository.save).toHaveBeenCalled();
     expect(expectOutputCourse).toStrictEqual(course);
   });
+
+  it('should be able to remove a course', async () => {
+    const expectOutputTags = [
+      {
+        id,
+        name: 'nestjs',
+        created_at: date,
+      },
+    ];
+
+    const expectOutputCourse = [
+      {
+        id,
+        name: 'Test',
+        description: 'Test description',
+        created_at: date,
+        tags: expectOutputTags,
+      },
+    ];
+
+    const mockCourseRepository = {
+      destroy: jest.fn(),
+      findOne: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourse)),
+      remove: jest.fn(),
+    };
+
+    // @ts-expect-error defined part of methods
+    service['coursesRepository'] = mockCourseRepository;
+
+    await service.destroy(id);
+
+    expect(mockCourseRepository.remove).toHaveBeenCalled();
+  });
 });
