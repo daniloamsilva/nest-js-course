@@ -7,12 +7,10 @@ import { Tag } from './entities/tag.entity';
 
 @Injectable()
 export class CoursesService {
-  constructor(
-    @Inject('COURSES_REPOSITORY')
-    private readonly coursesRepository: Repository<Course>,
-    @Inject('TAGS_REPOSITORY')
-    private readonly tagsRepository: Repository<Tag>,
-  ) {}
+  @Inject('COURSES_REPOSITORY')
+  private readonly coursesRepository: Repository<Course>;
+  @Inject('TAGS_REPOSITORY')
+  private readonly tagsRepository: Repository<Tag>;
 
   async index() {
     const courses = await this.coursesRepository.find({
